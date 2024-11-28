@@ -4,7 +4,6 @@ import json
 import os
 from datetime import datetime
 
-
 def get_vk_user_info(user_id=1, access_token=None):
     version = '5.199'  # last version of VK API (october 2024)
 
@@ -62,6 +61,23 @@ def parse_arguments():
     
     return parser.parse_args()
 
+def get_followers_and_subscriptions(user_id, access_token, depth=2):
+    if depth == 0:
+        return []
+    
+    user_info = get_vk_user_info(user_id, access_token)
+    followers = user_info.get('followers', [])
+    subscriptions = user_info.get('users', [])
+    
+    result = [{'user_id': user_id, 'info': user_info}]
+    
+    for follower_id in followers:
+        result += get_followers_and_subscriptions(follower_id, access_token, depth - 1)
+    
+    for subscription_id in subscriptions:
+        result += get_followers_and_subscriptions(subscription_id, access_token, depth - 1)
+    
+    return result
 
 def main():
     args = parse_arguments()
