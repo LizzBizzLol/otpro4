@@ -141,9 +141,9 @@ def create_user_node(tx, user_id, screen_name, name, sex, home_town):
     tx.run(query, user_id=user_id, screen_name=screen_name, name=name, sex=sex, home_town=home_town)
 
 # Создание подключения
-uri = "bolt://localhost:7687"  # стандартный URI для Neo4j
+uri = "bolt://localhost:7687"
 user = "neo4j"
-password = "adminadmin"  # замени на свой пароль
+password = "adminadmin"
 driver = connect_to_neo4j(uri, user, password)
 
 # Пример записи данных
