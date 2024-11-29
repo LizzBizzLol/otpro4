@@ -29,3 +29,11 @@ class Neo4jHelper:
                 """.replace("{relation_type}", relation_type),
                 user1_id=user1_id, user2_id=user2_id
             )
+
+    def create_index(self, label, property_name):
+        """
+        Создаёт индекс для указанного свойства узлов с заданной меткой.
+        Если индекс уже существует, он не будет дублироваться.
+        """
+        with self.driver.session() as session:
+            session.run(f"CREATE INDEX IF NOT EXISTS FOR (n:{label}) ON (n.{property_name})")
